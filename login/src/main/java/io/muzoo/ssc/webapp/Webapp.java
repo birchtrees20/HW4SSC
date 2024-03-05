@@ -3,9 +3,12 @@ package io.muzoo.ssc.webapp;
 import java.io.File;
 import javax.servlet.ServletException;
 
+import io.muzoo.ssc.webapp.service.DatabaseConnectionService;
 import io.muzoo.ssc.webapp.service.SecurityService;
+import io.muzoo.ssc.webapp.service.UserService;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
+import org.apache.catalina.User;
 import org.apache.catalina.startup.Tomcat;
 
 public class Webapp {
@@ -17,7 +20,10 @@ public class Webapp {
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8082);
 
+
+
         SecurityService securityService = new SecurityService();
+        securityService.setUserService(UserService.getInstance());
         ServletRouter servletRouter = new ServletRouter();
         servletRouter.setSecurityService(securityService);
 

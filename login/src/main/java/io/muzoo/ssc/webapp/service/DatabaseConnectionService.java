@@ -12,9 +12,11 @@ public class DatabaseConnectionService {
 
     private final HikariDataSource ds;
 
+    private static DatabaseConnectionService service;
+
     //todo: THE FILE config.properties IS NOT COMMITTED TO GIT REPO
 
-    public DatabaseConnectionService() {
+    private DatabaseConnectionService() {
         ds = new HikariDataSource();
         ds.setMaximumPoolSize(20);
 
@@ -32,5 +34,12 @@ public class DatabaseConnectionService {
 
     public Connection getConnection() throws SQLException {
         return ds.getConnection();
+    }
+
+    public static DatabaseConnectionService getInstance() {
+        if (service == null) {
+            service = new DatabaseConnectionService();
+        }
+        return service;
     }
 }

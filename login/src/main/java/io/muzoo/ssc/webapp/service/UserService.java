@@ -9,13 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
-
+    //user service used in too many places and only one instance of it needed so it should be singleton
     private static final String INSERT_USER_SQL = "INSERT INTO tbl_user (username, password, display_name) VALUES (?, ?, ?);";
     private static final String SELECT_USER_SQL = "SELECT * FROM tbl_user WHERE username = ?;";
     private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM tbl_user;";
 
     @Setter
     private DatabaseConnectionService databaseConnectionService;
+
+    private static UserService service;
+    private UserService() {
+    }
+
+    public static UserService getInstance(){
+        if (service == null) {
+            service = new UserService();
+            service.setDatabaseConnectionService(DatabaseConnectionService.getInstance());
+        }
+        return service;
+    }
 
     // create new user
     public void createUser(String username, String password, String displayName) throws UserServiceException {
@@ -95,21 +107,15 @@ public class UserService {
 
 
     public static void main(String[] args) {
-        UserService userService = new UserService();
-        userService.setDatabaseConnectionService(new DatabaseConnectionService());
+        UserService userService = UserService.getInstance();
+        try {
+            userService.createUser("admin", "123456", "Admin");
+        } catch (UserServiceException e) {
+            throw new RuntimeException(e);
+        }/*
         List<User> users = userService.findAll();
         for (User user : users) {
             System.out.println(user.getUsername());
-        }
+        }*/
     }
-
-    /*
-    final HikariDataSource ds = new HikariDataSource();
-        ds.setMaximumPoolSize(20);
-        ds.setDriverClassName("org.mariadb.jdbc.Driver");
-        ds.setJdbcUrl("jdbc:mariadb://localhost:13306/login_webapp");
-        ds.addDataSourceProperty("user", "ssc");
-        ds.addDataSourceProperty("password", "hardpass");
-        ds.setAutoCommit(false);
-        */
 }
