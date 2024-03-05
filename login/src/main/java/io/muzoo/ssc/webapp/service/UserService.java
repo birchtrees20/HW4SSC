@@ -9,7 +9,7 @@ import java.sql.*;
 public class UserService {
 
     private static final String INSERT_USER_SQL = "INSERT INTO tbl_user (username, password, display_name) VALUES (?, ?, ?);";
-    private static final String SELECT_USER_SQL = "INSERT * FROM tbl_user WHERE username = ?;";
+    private static final String SELECT_USER_SQL = "SELECT * FROM tbl_user WHERE username = ?;";
 
     @Setter
     private DatabaseConnectionService databaseConnectionService;
@@ -47,7 +47,7 @@ public class UserService {
                     resultSet.getLong("id"),
                     resultSet.getString("username"),
                     resultSet.getString("password"),
-                    resultSet.getString("displayName")
+                    resultSet.getString("display_Name")
             );
 
         } catch (SQLException throwables) {
