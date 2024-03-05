@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class ConfigurationLoader {
     // added static method for loading configuration from disk
-    public static void load() {
+    public static ConfigProperties load() {
         String configFilename = "config.properties";
         try (FileInputStream fin = new FileInputStream(configFilename)) {
             Properties prop = new Properties();
@@ -17,18 +17,15 @@ public class ConfigurationLoader {
             String username = prop.getProperty("database.username");
             String password = prop.getProperty("database.password");
 
+            return new ConfigProperties.ConfigPropertiesBuilder()
+                    .databaseDriverClassName(driverClassName)
+                    .databaseConnectionURL(connectionURL)
+                    .databaseUsername(username)
+                    .databasePassword(password)
+                    .build();
 
-
-            System.out.println(driverClassName);
-            System.out.println(connectionURL);
-            System.out.println(username);
-            System.out.println(password);
         } catch (Exception e) {
-            System.out.println("Exception: " + e);
+            return null;
         }
-    }
-
-    public static void main(String[] args) {
-        load();
     }
 }
