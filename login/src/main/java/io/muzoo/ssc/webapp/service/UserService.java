@@ -58,6 +58,18 @@ public class UserService {
     }
 
     // delete user
+    public void deleteUserByUsername() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    // update user by user id
+    public void updateUserById(Long id, String displayName) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    public void changePassword(String newPassword) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
     // list all users
     public List<User> findAll() {
@@ -80,7 +92,7 @@ public class UserService {
         }
         return users;
     }
-    // update user by user id
+
 
     public static void main(String[] args) {
         UserService userService = new UserService();
