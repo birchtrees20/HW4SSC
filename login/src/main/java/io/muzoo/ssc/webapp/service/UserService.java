@@ -4,13 +4,12 @@ import io.muzoo.ssc.webapp.model.User;
 import lombok.Setter;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserService {
 
     private static final String INSERT_USER_SQL = "INSERT INTO tbl_user (username, password, display_name) VALUES (?, ?, ?);";
+    private static final String SELECT_USER_SQL = "INSERT * FROM tbl_user WHERE username = ?;";
 
     @Setter
     private DatabaseConnectionService databaseConnectionService;
@@ -27,25 +26,46 @@ public class UserService {
             ps.setString(3, displayName);
             ps.executeUpdate();
             connection.commit();
-            //TODO: check what happens if user is duplicated
 
-        } catch (SQLException throwables) {
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new UsernameNotUniqueException(String.format("Username %s has already been taken.", username));
+        }
+        catch (SQLException throwables) {
             throw new UserServiceException(throwables.getMessage());
         }
     }
 
-    public static void main(String[] args) throws UserServiceException {
-        UserService userService = new UserService();
-        userService.setDatabaseConnectionService(new DatabaseConnectionService());
-        userService.createUser("gigadot", "devpass", "Weerapong");
+    // find user by username
+    public User findByUsername(String username) {
+        try {
+            Connection connection = databaseConnectionService.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SELECT_USER_SQL);
+            ps.setString(1, username);
+            ResultSet resultSet = ps.executeQuery();
+            resultSet.next();
+            return new User(
+                    resultSet.getLong("id"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password"),
+                    resultSet.getString("displayName")
+            );
+
+        } catch (SQLException throwables) {
+            return null;
+        }
     }
 
-    // find user by username
     // delete user
 
     // list all users
     // update user by user id
 
+    public static void main(String[] args) {
+        UserService userService = new UserService();
+        userService.setDatabaseConnectionService(new DatabaseConnectionService());
+        User user = userService.findByUsername("gigadot");
+        System.out.println(user.getUsername());
+    }
 
     /*
     final HikariDataSource ds = new HikariDataSource();
