@@ -5,11 +5,14 @@ import lombok.Setter;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserService {
 
     private static final String INSERT_USER_SQL = "INSERT INTO tbl_user (username, password, display_name) VALUES (?, ?, ?);";
     private static final String SELECT_USER_SQL = "SELECT * FROM tbl_user WHERE username = ?;";
+    private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM tbl_user;";
 
     @Setter
     private DatabaseConnectionService databaseConnectionService;
@@ -29,8 +32,7 @@ public class UserService {
 
         } catch (SQLIntegrityConstraintViolationException e) {
             throw new UsernameNotUniqueException(String.format("Username %s has already been taken.", username));
-        }
-        catch (SQLException throwables) {
+        } catch (SQLException throwables) {
             throw new UserServiceException(throwables.getMessage());
         }
     }
@@ -58,13 +60,35 @@ public class UserService {
     // delete user
 
     // list all users
+    public List<User> findAll() {
+        List<User> users = new ArrayList<>();
+        try {
+            Connection connection = databaseConnectionService.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SELECT_ALL_USERS_SQL);
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                users.add(new User(
+                        resultSet.getLong("id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("display_Name")));
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return users;
+    }
     // update user by user id
 
     public static void main(String[] args) {
         UserService userService = new UserService();
         userService.setDatabaseConnectionService(new DatabaseConnectionService());
-        User user = userService.findByUsername("gigadot");
-        System.out.println(user.getUsername());
+        List<User> users = userService.findAll();
+        for (User user : users) {
+            System.out.println(user.getUsername());
+        }
     }
 
     /*
