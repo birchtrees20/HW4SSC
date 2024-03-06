@@ -10,24 +10,24 @@ import io.muzoo.ssc.webapp.model.User;
 import io.muzoo.ssc.webapp.service.SecurityService;
 import io.muzoo.ssc.webapp.service.UserService;
 
-import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  *
  * @author gigadot
  */
-public class HomeServlet extends HttpServlet implements Routable {
+public class DeleteUserServlet extends HttpServlet implements Routable {
 
     private SecurityService securityService;
 
     @Override
     public String getMapping() {
-        return "/index.jsp";
+        return "/user/delete";
     }
 
     @Override
@@ -43,18 +43,28 @@ public class HomeServlet extends HttpServlet implements Routable {
             String username = (String) request.getSession().getAttribute("username");
             UserService userService = UserService.getInstance();
 
-            request.setAttribute("currentUser", userService.findByUsername(username));
+            try {
+                User currentUser = userService.findByUsername(username);
 
-            request.setAttribute("users", userService.findAll());
+                User deletingUser = userService.findByUsername(request.getParameter("username"));
+                if (userService.deleteUserByUsername(deletingUser.getUsername())) {
+                    // go to user list page
+                    request.getSession().setAttribute("hasError", false);
+                    request.getSession().setAttribute("message", "User is deleted");
+                } else {
+                    //err
+                    request.getSession().setAttribute("hasError", true);
+                    request.getSession().setAttribute("message", "Unable to delete User");
+                }
+            } catch (Exception e) {
+                //err
+                request.getSession().setAttribute("hasError", true);
+                request.getSession().setAttribute("message", "Unable to delete User");
+            }
 
-            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/home.jsp");
-            rd.include(request, response);
 
-            request.removeAttribute("hasError");
-            request.removeAttribute("message");
+            response.sendRedirect("/");
         } else {
-            request.removeAttribute("hasError");
-            request.removeAttribute("message");
             response.sendRedirect("/login");
         }
     }
