@@ -37,7 +37,10 @@
                 <td class="py-3">${user.displayName}</td>
                 <td class="py-3">
                     <button class="btn btn-warning btn-sm" type="button"><i class="fa fa-pencil"></i></button>
-                    <button class="btn btn-danger btn-sm" type="button"><i class="fa fa-trash"></i></button>
+                    <c:if test="${currentUser.username != user.username}">
+                        <button class="btn btn-danger btn-sm" type="button"><i class="fa fa-trash"></i></button>
+                    </c:if>
+
                 </td>
             </tr>
         </c:forEach>
