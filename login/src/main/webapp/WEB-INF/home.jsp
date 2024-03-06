@@ -23,7 +23,7 @@
     <c:if test="${not empty message}">
 
         <c:choose>
-            <c:when test="${hasEror}">
+            <c:when test="${hasError}">
                 <div class="alert alert-danger" role="alert">
                     ${message}
                 </div>

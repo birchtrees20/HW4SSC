@@ -38,10 +38,13 @@ public class HomeServlet extends HttpServlet implements Routable {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         boolean authorized = securityService.isAuthorized(request);
+
         if (authorized) {
             // do MVC in here
             String username = (String) request.getSession().getAttribute("username");
             UserService userService = UserService.getInstance();
+
+
 
             request.setAttribute("currentUser", userService.findByUsername(username));
 
@@ -50,8 +53,9 @@ public class HomeServlet extends HttpServlet implements Routable {
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/home.jsp");
             rd.include(request, response);
 
-            request.removeAttribute("hasError");
-            request.removeAttribute("message");
+            request.getSession().removeAttribute("hasError");
+            request.getSession().removeAttribute("message");
+
         } else {
             request.removeAttribute("hasError");
             request.removeAttribute("message");
