@@ -31,12 +31,12 @@ public class CreateUserServlet extends HttpServlet implements Routable {
 
         if (authorized) {
             // do MVC in here
-            String username = (String) request.getSession().getAttribute("username");
-            UserService userService = UserService.getInstance();
+            //String username = (String) request.getSession().getAttribute("username");
+            //UserService userService = UserService.getInstance();
 
 
 
-            request.setAttribute("user", userService.findByUsername(username));
+            //request.setAttribute("user", userService.findByUsername(username));
 
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/create.jsp");
             rd.include(request, response);
