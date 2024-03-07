@@ -20,15 +20,17 @@ public class DatabaseConnectionService {
         ds = new HikariDataSource();
         ds.setMaximumPoolSize(50);
 
-        ConfigProperties configProperties = ConfigurationLoader.load();
+/*        ConfigProperties configProperties = ConfigurationLoader.load();
         if (configProperties == null) {
             throw new RuntimeException("Unable to read config.properties");
-        }
+        }*/
 
-        ds.setDriverClassName(configProperties.getDatabaseDriverClassName());
-        ds.setJdbcUrl(configProperties.getDatabaseConnectionURL());
-        ds.addDataSourceProperty("user", configProperties.getDatabaseUsername());
-        ds.addDataSourceProperty("password", configProperties.getDatabasePassword());
+
+
+        ds.setDriverClassName("org.mariadb.jdbc.Driver");
+        ds.setJdbcUrl("jdbc:mariadb://localhost:13306/login_webapp");
+        ds.addDataSourceProperty("user", "ssc");
+        ds.addDataSourceProperty("password", "hardpass");
         ds.setAutoCommit(false);
     }
 
