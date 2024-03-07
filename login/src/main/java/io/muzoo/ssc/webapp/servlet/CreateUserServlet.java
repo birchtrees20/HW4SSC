@@ -3,6 +3,7 @@ package io.muzoo.ssc.webapp.servlet;
 import io.muzoo.ssc.webapp.Routable;
 import io.muzoo.ssc.webapp.service.SecurityService;
 import io.muzoo.ssc.webapp.service.UserService;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -58,18 +59,37 @@ public class CreateUserServlet extends HttpServlet implements Routable {
         if (authorized) {
             // do MVC in here
 
-            String username = (String) request.getParameter("username");
-            String displayName = (String) request.getParameter("displayName");
+            String username = StringUtils.trim((String) request.getParameter("username"));
+            String displayName = StringUtils.trim((String) request.getParameter("displayName"));
             String password = (String) request.getParameter("password");
             String cpassword = (String) request.getParameter("cpassword");
-            
-            //String username = (String) request.getSession().getAttribute("username");
-            //UserService userService = UserService.getInstance();
 
+            UserService userService = UserService.getInstance();
+            String errorMessage = null;
+            if (userService.findByUsername(username) != null) {
+                errorMessage = "Username already exists";
+            }
+            else if (StringUtils.isBlank(displayName)) {
+                errorMessage = "Display Name cannot be blank";
+            }
+            else if (!StringUtils.equals(password, cpassword)) {
+                errorMessage = "Password mismatch";
+            }
 
-
-            //request.setAttribute("user", userService.findByUsername(username));
-
+            if (errorMessage != null) {
+                request.getSession().setAttribute("hasError", true);
+                request.getSession().setAttribute("message", errorMessage);
+            } else {
+                try {
+                    userService.createUser(username, password, displayName);
+                    request.getSession().setAttribute("hasError", false);
+                    request.getSession().setAttribute("message", "User created");
+                    response.sendRedirect("/"); return;
+                } catch (Exception e) {
+                    request.getSession().setAttribute("hasError", true);
+                    request.getSession().setAttribute("message", e.getMessage());
+                }
+            }
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/create.jsp");
             rd.include(request, response);
 
