@@ -50,4 +50,35 @@ public class CreateUserServlet extends HttpServlet implements Routable {
             response.sendRedirect("/login");
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        boolean authorized = securityService.isAuthorized(request);
+
+        if (authorized) {
+            // do MVC in here
+
+            String username = (String) request.getParameter("username");
+            String displayName = (String) request.getParameter("displayName");
+            String password = (String) request.getParameter("password");
+            String cpassword = (String) request.getParameter("cpassword");
+            
+            //String username = (String) request.getSession().getAttribute("username");
+            //UserService userService = UserService.getInstance();
+
+
+
+            //request.setAttribute("user", userService.findByUsername(username));
+
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/create.jsp");
+            rd.include(request, response);
+
+            request.getSession().removeAttribute("hasError");
+            request.getSession().removeAttribute("message");
+
+        } else {
+            request.removeAttribute("hasError");
+            request.removeAttribute("message");
+            response.sendRedirect("/login");
+        }    }
 }
