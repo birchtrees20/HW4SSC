@@ -19,50 +19,76 @@
         </div>
     </nav>
 
-    <h3 class="my-4">Welcome, ${username}</h3>
-    <c:if test="${not empty message}">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="my-4">Welcome, ${username}</h3>
 
-        <c:choose>
-            <c:when test="${hasError}">
-                <div class="alert alert-danger" role="alert">
-                    ${message}
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="alert alert-success" role="alert">
-                        ${message}
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </c:if>
+        </div>
+    </div>
 
-    <table class="table table-striped table-bordered">
-        <thead>
-        <tr>
-            <th class="py-3">Id</th>
-            <th class="py-3">Username</th>
-            <th class="py-3">Display Name</th>
-            <th class="py-3">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="user" items="${users}">
-            <tr>
-                <td class="py-3">${user.id}</td>
-                <td class="py-3">${user.username}</td>
-                <td class="py-3">${user.displayName}</td>
-                <td class="py-3">
-                    <button class="btn btn-warning btn-sm" type="button"><i class="fa fa-pencil"></i></button>
-                    <c:if test="${currentUser.username != user.username}">
-                        <a class="btn btn-danger btn-sm" type="button" href="/user/delete?username=${user.username}"><i
-                                class="fa fa-trash"></i></a>
-                    </c:if>
+    <div class="row">
+        <div class="col-12">
+            <c:if test="${not empty message}">
 
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+            <c:choose>
+                <c:when test="${hasError}">
+                    <div class="alert alert-danger" role="alert">
+                            ${message}
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="alert alert-success" role="alert">
+                            ${message}
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </c:if>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <a class="btn btn-success btn-sm" type="button" href="/user/create"><i class="fa fa-plus"></i>
+                &nbsp; New User</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th class="py-3">Id</th>
+                    <th class="py-3">Username</th>
+                    <th class="py-3">Display Name</th>
+                    <th class="py-3">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="user" items="${users}">
+                    <tr>
+                        <td class="py-3">${user.id}</td>
+                        <td class="py-3">${user.username}</td>
+                        <td class="py-3">${user.displayName}</td>
+                        <td class="py-3">
+                            <button class="btn btn-warning btn-sm" type="button"><i class="fa fa-pencil"></i></button>
+                            <c:if test="${currentUser.username != user.username}">
+                                <a class="btn btn-danger btn-sm" type="button" href="/user/delete?username=${user.username}"><i
+                                        class="fa fa-trash"></i></a>
+                            </c:if>
+
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+
 </div>
 
 </body>
