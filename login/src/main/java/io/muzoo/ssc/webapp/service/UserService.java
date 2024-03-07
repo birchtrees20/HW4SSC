@@ -14,6 +14,8 @@ public class UserService {
     private static final String SELECT_USER_SQL = "SELECT * FROM tbl_user WHERE username = ?;";
     private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM tbl_user;";
     private static final String DELETE_USER_SQL = "DELETE FROM tbl_user WHERE username =?;";
+    private static final String UPDATE_USER_SQL = "UPDATE tbl_user SET display_name = ? WHERE username = ?;";
+
 
     @Setter
     private DatabaseConnectionService databaseConnectionService;
@@ -86,9 +88,21 @@ public class UserService {
     }
 
     // update user by user id
-    public void updateUserById(Long id, String displayName) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+    public void updateUserByUsername(String username, String displayName) throws UserServiceException {
+        // password need to be hashed and salted
+        //String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        try {
+            Connection connection = databaseConnectionService.getConnection();
+            PreparedStatement ps = connection.prepareStatement(UPDATE_USER_SQL);
+            ps.setString(1, displayName);
+            ps.setString(2, username);
+
+            ps.executeUpdate();
+            connection.commit();
+
+        } catch (SQLException throwables) {
+            throw new UserServiceException(throwables.getMessage());
+        }    }
 
     public void changePassword(String newPassword) {
         throw new UnsupportedOperationException("not yet implemented");

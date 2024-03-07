@@ -18,7 +18,7 @@ public class DatabaseConnectionService {
 
     private DatabaseConnectionService() {
         ds = new HikariDataSource();
-        ds.setMaximumPoolSize(20);
+        ds.setMaximumPoolSize(50);
 
         ConfigProperties configProperties = ConfigurationLoader.load();
         if (configProperties == null) {

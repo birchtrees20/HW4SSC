@@ -72,7 +72,7 @@
                         <td class="py-3">${user.username}</td>
                         <td class="py-3">${user.displayName}</td>
                         <td class="py-3">
-                            <button class="btn btn-warning btn-sm" type="button"><i class="fa fa-pencil"></i></button>
+                            <a class="btn btn-warning btn-sm" type="button" href="/user/edit?username=${user.username}"><i class="fa fa-pencil"></i></a>
                             <c:if test="${currentUser.username != user.username}">
                                 <a class="btn btn-danger btn-sm" type="button" href="/user/delete?username=${user.username}"><i
                                         class="fa fa-trash"></i></a>
