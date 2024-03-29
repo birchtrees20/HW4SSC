@@ -1,1 +1,3 @@
-/login/.idea/*
+**/login/.idea/*
+
+*.sh
