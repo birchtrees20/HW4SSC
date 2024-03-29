@@ -1,4 +1,5 @@
-*.iml
-tomcat.8082
-target
-.idea
+/*
+
+!src/
+!config.properties
+!pom.xml
