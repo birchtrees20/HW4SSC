@@ -1,3 +1,10 @@
-**/login/.idea/*
+# login folders to be ignored
 
+**/login/.idea/*
+**/login/META-INF/*
+**/login/target/*
+**/login/tomcat.80/*
+
+# file types to be ignored
 *.sh
+*.jar
