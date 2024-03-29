@@ -28,7 +28,7 @@ public class DatabaseConnectionService {
 
 
         ds.setDriverClassName("org.mariadb.jdbc.Driver");
-        ds.setJdbcUrl("jdbc:mariadb://localhost:13306/login_webapp");
+        ds.setJdbcUrl("jdbc:mariadb://172.17.0.1:3306/login_webapp");
         ds.addDataSourceProperty("user", "ssc");
         ds.addDataSourceProperty("password", "hardpass");
         ds.setAutoCommit(false);
