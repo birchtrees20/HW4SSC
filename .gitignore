@@ -1,8 +1,1 @@
-/*
-
-# Ignore all except:
-
-!**/login/src/*
-!**/login/pom.xml
-!**/login/config.properties
-/login/tomcat.80
+/login/*
