@@ -74,6 +74,8 @@ public class DeleteUserServlet extends HttpServlet implements Routable {
 
 
             response.sendRedirect("/");
+            request.getSession().removeAttribute("hasError");
+            request.getSession().removeAttribute("message");
         } else {
             response.sendRedirect("/login");
         }
