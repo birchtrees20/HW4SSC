@@ -13,7 +13,7 @@
 
     <nav class="navbar bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand">SSC - Login Webapp</a>
+            <a class="navbar-brand" href="/">SSC - Login Webapp</a>
             <a class="btn btn-light btn-sm pull-right" type="button" href="/logout"><i class="fa fa-sign-out"></i>
                 &nbsp; Logout</a>
         </div>
