@@ -84,7 +84,10 @@ public class CreateUserServlet extends HttpServlet implements Routable {
                     userService.createUser(username, password, displayName);
                     request.getSession().setAttribute("hasError", false);
                     request.getSession().setAttribute("message", "User created");
-                    response.sendRedirect("/"); return;
+                    response.sendRedirect("/");
+                    request.getSession().removeAttribute("hasError");
+                    request.getSession().removeAttribute("message");
+                    return;
                 } catch (Exception e) {
                     request.getSession().setAttribute("hasError", true);
                     request.getSession().setAttribute("message", e.getMessage());
