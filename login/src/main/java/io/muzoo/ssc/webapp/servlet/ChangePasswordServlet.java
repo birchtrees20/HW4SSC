@@ -91,8 +91,8 @@ public class ChangePasswordServlet extends HttpServlet implements Routable {
                     request.getSession().setAttribute("hasError", false);
                     request.getSession().setAttribute("message", "Password updated");
                     response.sendRedirect("/");
-                    request.getSession().removeAttribute("hasError");
-                    request.getSession().removeAttribute("message");
+                    //request.getSession().removeAttribute("hasError");
+                    //request.getSession().removeAttribute("message");
                     return;
                 } catch (Exception e) {
                     request.getSession().setAttribute("hasError", true);

@@ -86,10 +86,10 @@ public class EditUserServlet extends HttpServlet implements Routable {
                 try {
                     userService.updateUserByUsername(username, displayName);
                     request.getSession().setAttribute("hasError", false);
-                    request.getSession().setAttribute("message", "User created");
+                    request.getSession().setAttribute("message", "Username edited");
                     response.sendRedirect("/");
-                    request.getSession().removeAttribute("hasError");
-                    request.getSession().removeAttribute("message");
+                    //request.getSession().removeAttribute("hasError");
+                    //request.getSession().removeAttribute("message");
                     return;
                 } catch (Exception e) {
                     request.getSession().setAttribute("hasError", true);
@@ -99,8 +99,8 @@ public class EditUserServlet extends HttpServlet implements Routable {
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/edit.jsp");
             rd.include(request, response);
 
-            request.getSession().removeAttribute("hasError");
-            request.getSession().removeAttribute("message");
+            //request.getSession().removeAttribute("hasError");
+            //request.getSession().removeAttribute("message");
 
         } else {
             request.removeAttribute("hasError");

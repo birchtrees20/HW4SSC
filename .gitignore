@@ -8,3 +8,4 @@
 # file types to be ignored
 *.sh
 *.jar
+/login/tomcat.80

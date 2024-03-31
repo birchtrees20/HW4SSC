@@ -21,6 +21,8 @@ public class LogoutServlet extends HttpServlet implements Routable {
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/login.jsp");
         rd.include(request, response);
         response.sendRedirect("/login");
+        request.getSession().removeAttribute("hasError");
+        request.getSession().removeAttribute("message");
     }
 
     @Override
